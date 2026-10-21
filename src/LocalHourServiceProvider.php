@@ -45,7 +45,7 @@ class LocalHourServiceProvider extends ServiceProvider
 
         $migration = dirname(__DIR__).'/database/migrations/2026_01_01_000000_create_local_hour_runs_table.php';
         $this->publishes([
-            $migration => database_path('migrations/2026_01_01_000000_create_local_hour_runs_table.php'),
+            $migration => $this->app->databasePath('migrations/2026_01_01_000000_create_local_hour_runs_table.php'),
         ], 'local-hour-migrations');
     }
 }

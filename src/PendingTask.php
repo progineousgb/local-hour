@@ -11,6 +11,7 @@ use Progineous\LocalHour\Sources\EloquentUserSource;
 
 final class PendingTask
 {
+    /** @var list<array<string, mixed>>|class-string|UserSource|null */
     private array|string|UserSource|null $users = null;
 
     private string $timezoneColumn = 'timezone';

@@ -30,14 +30,10 @@ final class EloquentUserSource implements UserSource
         /** @var Model $model */
         $model = new $this->modelClass();
         $key = $model->getKeyName();
-        $columns = [];
-        foreach ([$key, $this->timezoneColumn, $this->timeColumn] as $column) {
-            if (is_string($column) && $column !== '' && !in_array($column, $columns, true)) {
-                $columns[] = $column;
-            }
-        }
 
-        $model->newQuery()->select($columns)->chunkById(
+        // Read whole rows. The callback receives the model, and a notification
+        // needs columns such as email that are not the key, timezone, or time.
+        $model->newQuery()->chunkById(
             $size,
             function ($models) use ($callback, $key): void {
                 $records = [];
