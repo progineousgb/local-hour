@@ -72,7 +72,9 @@ final class Clock
         $end = $target + 48 * 3600;
         $transitions = $timezone->getTransitions($begin, $end);
         if (!is_array($transitions) || $transitions === []) {
-            return $this->remember($key, null);
+            // An offset zone such as +03:00, or an abbreviation such as EST, has no
+            // transitions. Its offset is fixed, so the clock time maps to one instant.
+            return $this->remember($key, $target - $timezone->getOffset(new DateTimeImmutable('@'.$target)));
         }
 
         $count = count($transitions);

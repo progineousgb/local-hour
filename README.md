@@ -32,6 +32,28 @@ php artisan vendor:publish --tag=local-hour-migrations
 php artisan migrate
 ```
 
+### Linux
+
+Install PHP 8.2 or newer and Composer, then run the commands above in your Laravel project. On Debian or Ubuntu: `sudo apt install php-cli php-xml php-mbstring php-sqlite3 unzip`, then install Composer from https://getcomposer.org/download/.
+
+### macOS
+
+With Homebrew: `brew install php composer`, then run the commands above in your Laravel project.
+
+### Windows
+
+Install PHP 8.2 or newer from https://windows.php.net/download/ and add it to `PATH`, then install Composer with the Windows installer from https://getcomposer.org/download/. Run the commands above in PowerShell or Command Prompt, in your project folder. In production, run `php artisan schedule:run` every minute with Task Scheduler, or use `php artisan schedule:work`.
+
+### Run the tests
+
+```bash
+git clone https://github.com/progineousgb/local-hour
+cd local-hour
+composer install
+composer test
+composer analyse
+```
+
 Laravel 12 and 13 discover the service provider. In `routes/console.php`, schedule one command:
 
 ```php
@@ -54,7 +76,7 @@ LocalHour::dailyAt('08:00', 'digest')
     ->each(fn (User $user) => $user->notify(new DailyDigest));
 ```
 
-`timezone` is an IANA name such as `Africa/Cairo` or `Asia/Kolkata`. The model is read in chunks. The callback receives the user model.
+`timezone` is an IANA name such as `Africa/Cairo` or `Asia/Kolkata`. A fixed offset such as `+03:00` also works, but it never changes for daylight saving. The model is read in chunks by primary key. The callback receives the whole user model, so a notification can read columns such as `email`.
 
 When each user has their own clock time, name that column:
 
